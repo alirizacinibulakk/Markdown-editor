@@ -78,7 +78,7 @@ function HamburgerMenu({ isOpen, setOpen }) {
       {
         id: crypto.randomUUID(),
         title: `New Document-${documents.length}.md`,
-        img: {file},
+        img: file,
         date: formattedDate,
       }
     ])
