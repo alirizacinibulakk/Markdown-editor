@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css'
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 import { Squash as Hamburger } from 'hamburger-react'
+import markdownLogo from "../public/images/markdown-logo.svg"
 
 function App() {
   const [isOpen, setOpen] = useState(false);
@@ -26,7 +27,7 @@ function Header({ isOpen }) {
     <>
       <header className={`header ${isOpen ? 'shifted' : ''}`}>
         <div className="header-left">
-          <div className="header-title"><img src="../public/images/markdown-logo.svg" alt="" /></div>
+          <div className="header-title"><img src={markdownLogo} alt="" /></div>
           <hr />
           <div className="document-info">
             <img src="../public/images/file.svg" alt="" />
