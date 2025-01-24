@@ -4,61 +4,171 @@ import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 import { Squash as Hamburger } from 'hamburger-react'
 
 function App() {
-  const [markdown, setMarkdown] = useState("");
   const [isOpen, setOpen] = useState(false);
-
-  function handleChange(e) {
-    setMarkdown(e.target.value);
-  }
 
   return (
     <>
-      <div className="hamburger-wrapper">
-        <Hamburger toggled={isOpen} toggle={setOpen} color="#FFF" />
-      </div>
-      <div className={`menu-container ${isOpen ? 'open' : ''}`}>
-        <h2 className="document-title">MY DOCUMENTS</h2>
-        <button className="new-document-btn">+ New Document</button>
-        <div className="menu-content">
-          <ul>
-            <li>
-              <svg width="14" height="16" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13.107 3.393c.167.167.31.393.429.678.119.286.178.548.178.786v10.286c0 .238-.083.44-.25.607a.827.827 0 0 1-.607.25h-12a.827.827 0 0 1-.607-.25.827.827 0 0 1-.25-.607V.857C0 .62.083.417.25.25A.827.827 0 0 1 .857 0h8c.238 0 .5.06.786.179.286.119.512.261.678.428l2.786 2.786ZM9.143 1.214v3.357H12.5c-.06-.172-.125-.294-.196-.366L9.509 1.411c-.072-.072-.194-.137-.366-.197Zm3.428 13.643V5.714H8.857a.827.827 0 0 1-.607-.25.827.827 0 0 1-.25-.607V1.143H1.143v13.714H12.57Z" fill="#C1C4CB"/>
-              </svg>
-              untitled-document.md
-            </li>
-            <li>
-              <svg width="14" height="16" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13.107 3.393c.167.167.31.393.429.678.119.286.178.548.178.786v10.286c0 .238-.083.44-.25.607a.827.827 0 0 1-.607.25h-12a.827.827 0 0 1-.607-.25.827.827 0 0 1-.25-.607V.857C0 .62.083.417.25.25A.827.827 0 0 1 .857 0h8c.238 0 .5.06.786.179.286.119.512.261.678.428l2.786 2.786ZM9.143 1.214v3.357H12.5c-.06-.172-.125-.294-.196-.366L9.509 1.411c-.072-.072-.194-.137-.366-.197Zm3.428 13.643V5.714H8.857a.827.827 0 0 1-.607-.25.827.827 0 0 1-.25-.607V1.143H1.143v13.714H12.57Z" fill="#C1C4CB"/>
-              </svg>
-              welcome.md
-            </li>
-          </ul>
-        </div>
-      </div>
-      <header>
-        <h1>Markdown Previewer</h1>
-      </header>
-      <div className="titles">
-        <div className="title editor-title">
-          <p>Markdown</p>
-        </div>
-        <hr />
-        <div className="title preview-title">
-          <p>Preview</p>
-        </div>
-      </div>
-      <div className="container">
-        <textarea
-          className="editor"
-          value={markdown}
-          onChange={handleChange}
-        />
-        <div className="preview" dangerouslySetInnerHTML={{ __html: marked(markdown) }} />
-      </div>
+      <HamburgerMenu isOpen={isOpen} setOpen={setOpen} />
+
+      <Header isOpen={isOpen} />
+
+
+      <EditorTitle isOpen={isOpen} />
     </>
   )
 }
 
 
 export default App
+
+function Header({ isOpen }) {
+  return (
+    <>
+      <header className={`header ${isOpen ? 'shifted' : ''}`}>
+        <div className="header-left">
+          <div className="header-title"><img src="../public/images/markdown-logo.svg" alt="" /></div>
+          <hr />
+          <div className="document-info">
+            <img src="../public/images/file.svg" alt="" />
+            <label htmlFor="">
+              <span>Document Name</span>
+              <input type="text" name='title'/>
+            </label>
+          </div>
+        </div>
+        <div className="header-btns">
+          <button><img src="../public/images/bin.png" alt="" /></button>
+          <button><img src="../public/images/save.png" alt="" /> Save Changes</button>
+        </div>
+      </header>
+    </>
+  )
+}
+
+function HamburgerMenu({ isOpen, setOpen }) {
+  const [documents, setDocuments] = useState([
+    {
+      id: crypto.randomUUID(),
+      title: "",
+    }
+  ]);
+
+  const today = new Date();
+  const day = today.getDate();
+  const monthIndex = today.getMonth();
+  const year = today.getFullYear();
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const monthName = months[monthIndex];
+  const formattedDate = `${day} ${monthName} ${year}`;
+
+
+
+  function handleNewDocumentClick() {
+    setDocuments([
+      ...documents,
+      {
+        id: crypto.randomUUID(),
+        title: `New Document-${documents.length}.md`,
+        img: "../public/images/file.svg",
+        date: formattedDate,
+      }
+    ])
+  }
+
+  function handleItemClick(){
+
+  }
+
+  return (
+    <>
+      <div className={`hamburger-wrapper ${isOpen ? 'shifted' : ''}`}>
+        <Hamburger className="hamburger" toggled={isOpen} toggle={setOpen} color="#FFF" size={30} />
+      </div>
+      <div className={`menu-container ${isOpen ? 'open' : ''}`}>
+        <h2 className="document-title">MY DOCUMENTS</h2>
+        <button className="new-document-btn" onClick={handleNewDocumentClick}>+ New Document</button>
+        <div className="menu-content">
+          {documents.map(x => (
+            <>
+              <button className='btn-item' onClick={handleItemClick}>
+                <div className="item">
+                  <img src={x.img} alt="" />
+                  <div className='item-title'>
+                    <p>{x.date}</p>
+                    <p>{x.title}</p>
+                  </div>
+                </div>
+              </button>
+              </>
+          ))}
+
+        </div>
+      </div>
+    </>
+  )
+}
+
+function EditorTitle({ isOpen }) {
+  const [markdown, setMarkdown] = useState("");
+  const [isPreviewOnly, setPreviewOnly] = useState(false);
+
+  function handleChange(e) {
+    setMarkdown(e.target.value);
+  }
+  function previewClickHandle() {
+    setPreviewOnly(!isPreviewOnly);
+    console.log(!isPreviewOnly)
+  }
+  return (
+    <>
+      {isPreviewOnly ? (
+
+        <div className={`container ${isOpen ? 'shifted' : ''}`}>
+          <div className="titles">
+            <div className="title preview-title preview-on">
+              <p>Preview</p>
+              <button onClick={previewClickHandle} className='preview-eye'>
+                <img src="../public/images/eye-off.svg" alt="" />
+              </button>
+            </div>
+          </div>
+          <div className="text-container preview-center">
+            <div className="preview preview-on preview-center" dangerouslySetInnerHTML={{ __html: marked(markdown) }} />
+          </div>
+        </div>
+
+      ) : (
+        <>
+          <div className={`container ${isOpen ? 'shifted' : ''}`}>
+            <div className="titles">
+              <div className="title editor-title">
+                <p>Markdown</p>
+              </div>
+              <hr />
+              <div className="title preview-title">
+                <p>Preview</p>
+                <button onClick={previewClickHandle} className='preview-eye'>
+                  <img src="../public/images/eye-on.svg" alt="" />
+                </button>
+              </div>
+            </div>
+            <div className="text-container">
+              <textarea
+                className="editor"
+                value={markdown}
+                onChange={handleChange}
+              />
+              <div className="preview" dangerouslySetInnerHTML={{ __html: marked(markdown) }} />
+            </div>
+          </div>
+        </>
+
+
+      )}
+
+    </>
+  )
+}
