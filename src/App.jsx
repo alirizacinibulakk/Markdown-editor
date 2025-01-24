@@ -3,6 +3,11 @@ import './App.css'
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 import { Squash as Hamburger } from 'hamburger-react'
 import markdownLogo from "../public/images/markdown-logo.svg"
+import bin from "../public/images/bin.png"
+import eyeOff from "../public/images/eye-off.svg"
+import eyeOn from "../public/images/eye-on.svg"
+import file from "../public/images/file.svg"
+import save from "../public/images/save.png"
 
 function App() {
   const [isOpen, setOpen] = useState(false);
@@ -38,8 +43,8 @@ function Header({ isOpen }) {
           </div>
         </div>
         <div className="header-btns">
-          <button><img src="../public/images/bin.png" alt="" /></button>
-          <button><img src="../public/images/save.png" alt="" /> Save Changes</button>
+          <button><img src={bin} alt="" /></button>
+          <button><img src={save} alt="" /> Save Changes</button>
         </div>
       </header>
     </>
@@ -73,7 +78,7 @@ function HamburgerMenu({ isOpen, setOpen }) {
       {
         id: crypto.randomUUID(),
         title: `New Document-${documents.length}.md`,
-        img: "../public/images/file.svg",
+        img: {file},
         date: formattedDate,
       }
     ])
@@ -132,7 +137,7 @@ function EditorTitle({ isOpen }) {
             <div className="title preview-title preview-on">
               <p>Preview</p>
               <button onClick={previewClickHandle} className='preview-eye'>
-                <img src="../public/images/eye-off.svg" alt="" />
+                <img src={eyeOff} alt="" />
               </button>
             </div>
           </div>
@@ -152,7 +157,7 @@ function EditorTitle({ isOpen }) {
               <div className="title preview-title">
                 <p>Preview</p>
                 <button onClick={previewClickHandle} className='preview-eye'>
-                  <img src="../public/images/eye-on.svg" alt="" />
+                  <img src={eyeOn} alt="" />
                 </button>
               </div>
             </div>
