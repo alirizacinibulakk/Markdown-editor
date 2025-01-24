@@ -35,7 +35,7 @@ function Header({ isOpen }) {
           <div className="header-title"><img src={markdownLogo} alt="" /></div>
           <hr />
           <div className="document-info">
-            <img src="../public/images/file.svg" alt="" />
+            <img src={file} alt="" />
             <label htmlFor="">
               <span>Document Name</span>
               <input type="text" name='title'/>
